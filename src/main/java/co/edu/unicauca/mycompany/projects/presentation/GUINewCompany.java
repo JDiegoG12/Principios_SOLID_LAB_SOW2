@@ -2,6 +2,7 @@ package co.edu.unicauca.mycompany.projects.presentation;
 
 import co.edu.unicauca.mycompany.projects.domain.entities.Company;
 import co.edu.unicauca.mycompany.projects.domain.entities.Sector;
+import co.edu.unicauca.mycompany.projects.domain.services.CompanyService;
 import co.edu.unicauca.mycompany.projects.infra.Messages;
 import javax.swing.JFrame;
 
@@ -16,9 +17,13 @@ public class GUINewCompany extends javax.swing.JDialog {
      *
      * @param parent
      */
-    public GUINewCompany(JFrame parent) {
-        super(parent, "Nueva Empresa", true); //true: modal
+    private GUIMenu menu;
+    private CompanyService companyService;
 
+    public GUINewCompany(JFrame parent, CompanyService service, GUIMenu menu) {
+        super(parent, "Nueva Empresa", true); //true: modal
+        this.companyService = service;
+        this.menu = menu;
         initComponents();
         setSize(600, 500);
         setLocationRelativeTo(parent);
@@ -145,23 +150,93 @@ public class GUINewCompany extends javax.swing.JDialog {
         String phone = txtPhone.getText().trim();
         String paginaWeb = txtPaginaWeb.getText().trim();
         String sectorIndustrial = cboSector.getSelectedItem().toString().trim();
-        String email = txtEmail.getText().toString().trim();
+        String email = txtEmail.getText().trim();
         String password = txtPassword.getText().trim();
-        String name = txtName.getText().toString().trim();
-        if (nit.equals("")) {
-            Messages.showMessageDialog("Debe agregar el Nit", "Atención");
+        String name = txtName.getText().trim();
+
+        // Validación de campos obligatorios
+        if (nit.isEmpty()) {
+            Messages.showMessageDialog("Debe agregar el NIT", "Atención");
             txtNit.requestFocus();
             return;
-        } else if (name.equals("")) {
+        }
+
+        if (name.isEmpty()) {
             Messages.showMessageDialog("Debe agregar el nombre", "Atención");
-            txtNit.requestFocus();
+            txtName.requestFocus();
             return;
-        }else{
-            Company company = new Company(nit, name, phone, paginaWeb, Sector.OTHER, email, password);
-            
+        }
+
+        if (sectorIndustrial.isEmpty()) {
+            Messages.showMessageDialog("Debe seleccionar un sector industrial", "Atención");
+            cboSector.requestFocus();
+            return;
+        }
+
+        if (email.isEmpty()) {
+            Messages.showMessageDialog("Debe agregar un correo electrónico", "Atención");
+            txtEmail.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            Messages.showMessageDialog("Debe agregar una contraseña", "Atención");
+            txtPassword.requestFocus();
+            return;
+        }
+
+        // Validación de email
+        if (!esEmailValido(email)) {
+            Messages.showMessageDialog("El correo electrónico no es válido", "Atención");
+            txtEmail.requestFocus();
+            return;
+        }
+
+        // Validación de contraseña
+        if (!esPasswordValido(password)) {
+            Messages.showMessageDialog("La contraseña debe tener al menos 6 caracteres, una mayúscula y un carácter especial", "Atención");
+            txtPassword.requestFocus();
+            return;
+        }
+
+        // Convertir el sector seleccionado a enum
+        Sector sector;
+        sector = Sector.valueOf(sectorIndustrial.toUpperCase());
+
+        // Crear y registrar la empresa
+        Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
+        if (companyService.saveCompany(company)) {
+            Messages.showMessageDialog("Empresa registrada", "Confirmación");
+            menu.fillCompanies();
+            limpiarCampos();
+        } else {
+            Messages.showMessageDialog("Error al registrar empresa", "Error");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
+    // Método para limpiar los campos del formulario
 
+    private void limpiarCampos() {
+        txtNit.setText("");
+        txtPhone.setText("");
+        txtPaginaWeb.setText("");
+        txtEmail.setText("");
+        txtPassword.setText("");
+        txtName.setText("");
+        cboSector.setSelectedIndex(0); // Deja el combo en la primera opción
+        txtNit.requestFocus(); // Opcional: vuelve a enfocar el primer campo
+    }
+    // Función para validar el email
+
+    private boolean esEmailValido(String email) {
+        String regex = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
+        return email.matches(regex);
+    }
+
+// Función para validar la contraseña
+    private boolean esPasswordValido(String password) {
+        String regex = "^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?\":{}|<>]).{6,}$";
+        return password.matches(regex);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;

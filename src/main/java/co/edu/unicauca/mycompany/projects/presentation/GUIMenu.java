@@ -145,7 +145,7 @@ public class GUIMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNewCompanyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCompanyActionPerformed
-        GUINewCompany instance = new GUINewCompany(null);
+        GUINewCompany instance = new GUINewCompany(null, companyService, this);
         instance.setVisible(true);
 
     }//GEN-LAST:event_btnNewCompanyActionPerformed
@@ -153,7 +153,7 @@ public class GUIMenu extends javax.swing.JFrame {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
-    private void fillCompanies() {
+    public void fillCompanies() {
         DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
 
         model.setRowCount(0); // Limpiar la tabla antes de llenarla
