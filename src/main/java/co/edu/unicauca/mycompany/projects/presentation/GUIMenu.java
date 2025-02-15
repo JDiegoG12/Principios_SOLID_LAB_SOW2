@@ -157,10 +157,7 @@ public class GUIMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
     public void fillCompanies() {
-        
-        // ------------------------------------- CompanyArraysRepository -----------------------------------------------
-        
-        /*
+
         DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
 
         model.setRowCount(0); // Limpiar la tabla antes de llenarla
@@ -168,26 +165,6 @@ public class GUIMenu extends javax.swing.JFrame {
             model.addRow(new Object[]{company.getNit(), company.getName(), company.getSector()});
         }
         tblCompanies.setModel(model);
-
-        */
-        
-        // ------------------------------------- ----------------------- -----------------------------------------------
-         
-        DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
-        model.setRowCount(0); // Limpiar la tabla antes de llenarla
-
-        // Obtener la lista de compañías desde la base de datos
-        ICompanyRepository companyRepository = new CompanySqliteRepository();
-        List<Company> companies = companyRepository.listAll();
-
-        // Llenar el modelo con los datos de las compañías
-        for (Company company : companies) {
-            model.addRow(new Object[]{company.getNit(), company.getName(), company.getSector().toString()});
-        }
-
-        // Asignar el modelo actualizado a la tabla
-        tblCompanies.setModel(model);
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,19 +5,31 @@ import co.edu.unicauca.mycompany.projects.domain.entities.Sector;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- * Implementación del repositorio con Sqlite
- *
- * @author Libardo, Julio
+ * Implementación del repositorio de empresas utilizando SQLite como base de datos.
+ * 
+ * Esta clase proporciona métodos para conectar a la base de datos SQLite,
+ * crear la tabla de empresas si no existe, insertar empresas, listar todas
+ * las empresas y verificar la existencia de una empresa por su NIT.
+ * 
+ * @author Ana Sofia Arango Yanza
+ * @author Juan Diego Gomez Garces
  */
 public class CompanySqliteRepository implements ICompanyRepository {
 
     private Connection conn;
     
+    /**
+     * Constructor que inicializa la conexión a la base de datos.
+     */
     public CompanySqliteRepository() {
         connect();
     }
     
+    /**
+     * Establece la conexión con la base de datos SQLite y crea las tablas si no existen.
+     */
     private void connect() {
         try {
             String url = "jdbc:sqlite:src/database/myDatabase.db";
@@ -28,7 +40,9 @@ public class CompanySqliteRepository implements ICompanyRepository {
         }
     }
     
-    // Método para ejecutar el script SQL
+    /**
+     * Crea la tabla 'company' en la base de datos si no existe.
+     */
     private void createTables() {
         String sql = "CREATE TABLE IF NOT EXISTS company ("
                + "nit VARCHAR(15) PRIMARY KEY,"
@@ -46,7 +60,12 @@ public class CompanySqliteRepository implements ICompanyRepository {
         }
     } 
 
-    // Insertar una nueva empresa en la base de datos
+    /**
+     * Guarda una nueva empresa en la base de datos.
+     * 
+     * @param newCompany Objeto Company a insertar en la base de datos.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     @Override
     public boolean save(Company newCompany) {
        String sql = "INSERT INTO company (nit, name, phone, pageWeb, sector, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -66,7 +85,11 @@ public class CompanySqliteRepository implements ICompanyRepository {
         } 
     }
     
-    // Obtener todas las empresas
+    /**
+     * Obtiene una lista con todas las empresas registradas en la base de datos.
+     * 
+     * @return Lista de objetos Company.
+     */
     @Override
     public List<Company> listAll() {
         List<Company> companies = new ArrayList<>();
@@ -90,6 +113,12 @@ public class CompanySqliteRepository implements ICompanyRepository {
         return companies;
     }
     
+    /**
+     * Verifica si una empresa con el NIT dado existe en la base de datos.
+     * 
+     * @param nit Número de Identificación Tributaria (NIT) de la empresa.
+     * @return true si la empresa existe, false en caso contrario.
+     */
     @Override
     public boolean existsNit(String nit) {
         String sql = "SELECT 1 FROM company WHERE nit = ? LIMIT 1";

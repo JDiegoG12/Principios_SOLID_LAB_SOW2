@@ -23,5 +23,9 @@ public class CompanyService {
     public boolean saveCompany(Company newCompany) {
         return repository.save(newCompany);
     }
+    
+    public boolean existsNit(String nit) {
+        return repository.existsNit(nit);
+    }
 
 }

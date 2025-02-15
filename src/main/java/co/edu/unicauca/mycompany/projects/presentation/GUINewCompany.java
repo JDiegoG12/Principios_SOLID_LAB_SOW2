@@ -203,12 +203,21 @@ public class GUINewCompany extends javax.swing.JDialog {
 
         // Convertir el sector seleccionado a enum
         Sector sector = Sector.valueOf(sectorIndustrial.toUpperCase());
+        Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
 
         
-        // ------------------------------------- CompanyArraysRepository -----------------------------------------------
-        
-        // Crear y registrar la empresa
-        /* Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
+        // Verificar si el NIT ya existe
+        try {
+            if (companyService.existsNit(nit)) {
+                Messages.showMessageDialog("El NIT ya está registrado en el sistema", "Atención");
+                txtNit.requestFocus();
+                return;
+            }
+        } catch (Exception e) {
+            Messages.showMessageDialog("Error al verificar el NIT: " + e.getMessage(), "Error");
+            return;
+        }
+       
         if (companyService.saveCompany(company)) {
             Messages.showMessageDialog("Empresa registrada", "Confirmación");
             menu.fillCompanies();
@@ -216,33 +225,6 @@ public class GUINewCompany extends javax.swing.JDialog {
         } else {
             Messages.showMessageDialog("Error al registrar empresa", "Error");
         }
-        */
-        
-        // ------------------------------------- ----------------------- -----------------------------------------------
-        
-        
-        // Crear instancia del repositorio
-        ICompanyRepository companyRepository = new CompanySqliteRepository();
-
-        // Verificar si el NIT ya existe
-        if (companyRepository.existsNit(nit)) {
-            Messages.showMessageDialog("El NIT ya está registrado", "Atención");
-            txtNit.requestFocus();
-            return;
-        }
-
-        // Crear y registrar la empresa
-        Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
-        boolean isSaved = companyRepository.save(company);
-
-        if (isSaved) {
-            Messages.showMessageDialog("Empresa registrada", "Confirmación");
-            menu.fillCompanies();
-            limpiarCampos();
-        } else {
-            Messages.showMessageDialog("Error al registrar empresa", "Error");
-        }
-
     }//GEN-LAST:event_btnSaveActionPerformed
     // Método para limpiar los campos del formulario
 
