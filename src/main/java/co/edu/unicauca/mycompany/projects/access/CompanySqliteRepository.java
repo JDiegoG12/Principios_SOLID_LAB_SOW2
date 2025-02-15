@@ -18,15 +18,33 @@ public class CompanySqliteRepository implements ICompanyRepository {
         connect();
     }
     
-    // Conectar a la base de datos
     private void connect() {
         try {
-            String url = "jdbc:sqlite:D:/Documentos/LabSoftware2/Practica2/Principios_SOLID_LAB_SOW2/myDatabase.db";
+            String url = "jdbc:sqlite:src/database/myDatabase.db";
             conn = DriverManager.getConnection(url);
+            createTables(); // Crear tablas si no existen
         } catch (SQLException e) {
             System.out.println("Error al conectar: " + e.getMessage());
         }
     }
+    
+    // Método para ejecutar el script SQL
+    private void createTables() {
+        String sql = "CREATE TABLE IF NOT EXISTS company ("
+               + "nit VARCHAR(15) PRIMARY KEY,"
+               + "name VARCHAR(80) NOT NULL,"
+               + "phone VARCHAR(15),"
+               + "pageWeb VARCHAR(150),"
+               + "sector VARCHAR(15) NOT NULL CHECK (sector IN ('TECHNOLOGY', 'HEALTH', 'EDUCATION', 'SERVICES', 'OTHER')),"
+               + "email VARCHAR(80) UNIQUE NOT NULL,"
+               + "password VARCHAR(64) NOT NULL"
+               + ");";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println("Error al crear tablas: " + e.getMessage());
+        }
+    } 
 
     // Insertar una nueva empresa en la base de datos
     @Override

@@ -157,7 +157,11 @@ public class GUIMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
     public void fillCompanies() {
-        /*DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
+        
+        // ------------------------------------- CompanyArraysRepository -----------------------------------------------
+        
+        /*
+        DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
 
         model.setRowCount(0); // Limpiar la tabla antes de llenarla
         for (Company company : companyService.getAllCompanies()) {
@@ -166,6 +170,9 @@ public class GUIMenu extends javax.swing.JFrame {
         tblCompanies.setModel(model);
 
         */
+        
+        // ------------------------------------- ----------------------- -----------------------------------------------
+         
         DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
         model.setRowCount(0); // Limpiar la tabla antes de llenarla
 

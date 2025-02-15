@@ -205,7 +205,8 @@ public class GUINewCompany extends javax.swing.JDialog {
         Sector sector = Sector.valueOf(sectorIndustrial.toUpperCase());
 
         
-        // CompanyArraysRepository
+        // ------------------------------------- CompanyArraysRepository -----------------------------------------------
+        
         // Crear y registrar la empresa
         /* Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
         if (companyService.saveCompany(company)) {
@@ -216,6 +217,9 @@ public class GUINewCompany extends javax.swing.JDialog {
             Messages.showMessageDialog("Error al registrar empresa", "Error");
         }
         */
+        
+        // ------------------------------------- ----------------------- -----------------------------------------------
+        
         
         // Crear instancia del repositorio
         ICompanyRepository companyRepository = new CompanySqliteRepository();
