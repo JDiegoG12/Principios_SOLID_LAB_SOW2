@@ -1,5 +1,7 @@
 package co.edu.unicauca.mycompany.projects.presentation;
 
+import co.edu.unicauca.mycompany.projects.access.CompanySqliteRepository;
+import co.edu.unicauca.mycompany.projects.access.ICompanyRepository;
 import co.edu.unicauca.mycompany.projects.domain.entities.Company;
 import co.edu.unicauca.mycompany.projects.domain.entities.Sector;
 import co.edu.unicauca.mycompany.projects.domain.services.CompanyService;
@@ -200,11 +202,12 @@ public class GUINewCompany extends javax.swing.JDialog {
         }
 
         // Convertir el sector seleccionado a enum
-        Sector sector;
-        sector = Sector.valueOf(sectorIndustrial.toUpperCase());
+        Sector sector = Sector.valueOf(sectorIndustrial.toUpperCase());
 
+        
+        // CompanyArraysRepository
         // Crear y registrar la empresa
-        Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
+        /* Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
         if (companyService.saveCompany(company)) {
             Messages.showMessageDialog("Empresa registrada", "Confirmación");
             menu.fillCompanies();
@@ -212,6 +215,30 @@ public class GUINewCompany extends javax.swing.JDialog {
         } else {
             Messages.showMessageDialog("Error al registrar empresa", "Error");
         }
+        */
+        
+        // Crear instancia del repositorio
+        ICompanyRepository companyRepository = new CompanySqliteRepository();
+
+        // Verificar si el NIT ya existe
+        if (companyRepository.existsNit(nit)) {
+            Messages.showMessageDialog("El NIT ya está registrado", "Atención");
+            txtNit.requestFocus();
+            return;
+        }
+
+        // Crear y registrar la empresa
+        Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
+        boolean isSaved = companyRepository.save(company);
+
+        if (isSaved) {
+            Messages.showMessageDialog("Empresa registrada", "Confirmación");
+            menu.fillCompanies();
+            limpiarCampos();
+        } else {
+            Messages.showMessageDialog("Error al registrar empresa", "Error");
+        }
+
     }//GEN-LAST:event_btnSaveActionPerformed
     // Método para limpiar los campos del formulario
 

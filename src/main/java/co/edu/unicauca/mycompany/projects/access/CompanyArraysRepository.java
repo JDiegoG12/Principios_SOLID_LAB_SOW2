@@ -37,7 +37,8 @@ public class CompanyArraysRepository implements ICompanyRepository {
         return myArray;
     }
     
-    private boolean existsNit(String nit){
+    @Override
+    public boolean existsNit(String nit){
         for (Company company: myArray){
             if (company.getNit().equals(nit)){
                 return true;
@@ -45,5 +46,4 @@ public class CompanyArraysRepository implements ICompanyRepository {
         }
         return false;
     }
-
 }

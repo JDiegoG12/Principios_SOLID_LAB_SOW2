@@ -1,9 +1,12 @@
 package co.edu.unicauca.mycompany.projects.presentation;
 
+import co.edu.unicauca.mycompany.projects.access.CompanySqliteRepository;
+import co.edu.unicauca.mycompany.projects.access.ICompanyRepository;
 import co.edu.unicauca.mycompany.projects.domain.entities.Company;
 import co.edu.unicauca.mycompany.projects.domain.services.CompanyService;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -154,12 +157,28 @@ public class GUIMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
     public void fillCompanies() {
-        DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
+        /*DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
 
         model.setRowCount(0); // Limpiar la tabla antes de llenarla
         for (Company company : companyService.getAllCompanies()) {
             model.addRow(new Object[]{company.getNit(), company.getName(), company.getSector()});
         }
+        tblCompanies.setModel(model);
+
+        */
+        DefaultTableModel model = new DefaultTableModel(new String[]{"NIT", "Nombre", "Sector"}, 0);
+        model.setRowCount(0); // Limpiar la tabla antes de llenarla
+
+        // Obtener la lista de compañías desde la base de datos
+        ICompanyRepository companyRepository = new CompanySqliteRepository();
+        List<Company> companies = companyRepository.listAll();
+
+        // Llenar el modelo con los datos de las compañías
+        for (Company company : companies) {
+            model.addRow(new Object[]{company.getNit(), company.getName(), company.getSector().toString()});
+        }
+
+        // Asignar el modelo actualizado a la tabla
         tblCompanies.setModel(model);
 
     }
