@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author Libardo, Julio
+ * @author Ana Sofia Arango Yanza
+ * @author Juan Diego Gomez Garces
+ * @version 1.0
  */
 public class GUINewCompany extends javax.swing.JDialog {
 
@@ -148,6 +150,7 @@ public class GUINewCompany extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        //Recuperación de datos ingresados por el usuario
         String nit = txtNit.getText().trim();
         String phone = txtPhone.getText().trim();
         String paginaWeb = txtPaginaWeb.getText().trim();
@@ -157,44 +160,45 @@ public class GUINewCompany extends javax.swing.JDialog {
         String name = txtName.getText().trim();
 
         // Validación de campos obligatorios
+        //Nit no ingresado
         if (nit.isEmpty()) {
             Messages.showMessageDialog("Debe agregar el NIT", "Atención");
             txtNit.requestFocus();
             return;
         }
-
+        //Nombre no ingresado
         if (name.isEmpty()) {
             Messages.showMessageDialog("Debe agregar el nombre", "Atención");
             txtName.requestFocus();
             return;
         }
-
+        //Sector no ingresado
         if (sectorIndustrial.isEmpty()) {
             Messages.showMessageDialog("Debe seleccionar un sector industrial", "Atención");
             cboSector.requestFocus();
             return;
         }
-
+        //Email no ingresado
         if (email.isEmpty()) {
             Messages.showMessageDialog("Debe agregar un correo electrónico", "Atención");
             txtEmail.requestFocus();
             return;
         }
-
+        //Contraseña no ingresada
         if (password.isEmpty()) {
             Messages.showMessageDialog("Debe agregar una contraseña", "Atención");
             txtPassword.requestFocus();
             return;
         }
 
-        // Validación de email
+        // Validación de email según reglas de negocio
         if (!esEmailValido(email)) {
             Messages.showMessageDialog("El correo electrónico no es válido", "Atención");
             txtEmail.requestFocus();
             return;
         }
 
-        // Validación de contraseña
+        // Validación de contraseña según reglas de negocio
         if (!esPasswordValido(password)) {
             Messages.showMessageDialog("La contraseña debe tener al menos 6 caracteres, una mayúscula y un carácter especial", "Atención");
             txtPassword.requestFocus();
@@ -205,7 +209,6 @@ public class GUINewCompany extends javax.swing.JDialog {
         Sector sector = Sector.valueOf(sectorIndustrial.toUpperCase());
         Company company = new Company(nit, name, phone, paginaWeb, sector, email, password);
 
-        
         // Verificar si el NIT ya existe
         try {
             if (companyService.existsNit(nit)) {
@@ -217,7 +220,8 @@ public class GUINewCompany extends javax.swing.JDialog {
             Messages.showMessageDialog("Error al verificar el NIT: " + e.getMessage(), "Error");
             return;
         }
-       
+
+        //Registro de empresas
         if (companyService.saveCompany(company)) {
             Messages.showMessageDialog("Empresa registrada", "Confirmación");
             menu.fillCompanies();
@@ -226,8 +230,8 @@ public class GUINewCompany extends javax.swing.JDialog {
             Messages.showMessageDialog("Error al registrar empresa", "Error");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
-    // Método para limpiar los campos del formulario
 
+// Método para limpiar los campos del formulario
     private void limpiarCampos() {
         txtNit.setText("");
         txtPhone.setText("");
@@ -238,14 +242,23 @@ public class GUINewCompany extends javax.swing.JDialog {
         cboSector.setSelectedIndex(0); // Deja el combo en la primera opción
         txtNit.requestFocus(); // Opcional: vuelve a enfocar el primer campo
     }
-    // Función para validar el email
-
+    /**
+     * Valida que el email ingresado cumpla las reglas de negocio
+     * 
+     * @param email String ingresado por el usuario
+     * @return true si la cadena cumple la expresion regular, false en caso contrario.
+     */
     private boolean esEmailValido(String email) {
         String regex = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
         return email.matches(regex);
     }
 
-// Función para validar la contraseña
+    /**
+     * Valida que la contraseña cumpla las reglas de negocio
+     * 
+     * @param password String ingresado por el usuario
+     * @return true si la cadena cumple la expresion regular, false en caso contrario.
+     */
     private boolean esPasswordValido(String password) {
         String regex = "^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?\":{}|<>]).{6,}$";
         return password.matches(regex);

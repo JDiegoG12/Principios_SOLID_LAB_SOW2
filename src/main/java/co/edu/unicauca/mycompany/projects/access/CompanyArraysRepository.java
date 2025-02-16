@@ -22,7 +22,12 @@ public class CompanyArraysRepository implements ICompanyRepository {
         myArray.add(new Company("456-1222-2233", "Solutions", "311454789", "www.solutions.com", Sector.HEALTH, "solutions@gmail.com", "123"));
 
     }
-
+    /**
+     * Guarda una nueva empresa en el Array.
+     * 
+     * @param newCompany Objeto Company a insertar en el array.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     @Override
     public boolean save(Company newCompany) {
         if (!existsNit(newCompany.getNit())){
@@ -31,12 +36,21 @@ public class CompanyArraysRepository implements ICompanyRepository {
         }
         return false;
     }
-
+     /**
+     * Obtiene una lista con todas las empresas registradas en el Aray.
+     * 
+     * @return Lista de objetos Company.
+     */
     @Override
     public List<Company> listAll() {
         return myArray;
     }
-    
+        /**
+     * Verifica si una empresa con el NIT dado existe en el Array.
+     * 
+     * @param nit Número de Identificación Tributaria (NIT) de la empresa.
+     * @return true si la empresa existe, false en caso contrario.
+     */
     @Override
     public boolean existsNit(String nit){
         for (Company company: myArray){

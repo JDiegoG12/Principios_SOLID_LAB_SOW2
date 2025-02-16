@@ -10,21 +10,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.*; 
+import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 
 /**
- *
- * @author Libardo, Julio
+ * @author Ana Sofia Arango Yanza
+ * @author Juan Diego Gomez Garces
+ * @version 1.0
  */
 public class CompanyServiceTest {
+
     /**
-     * Para hacer pruebas unitarias de la clase CompanyService, podemos usar 
+     * Para hacer pruebas unitarias de la clase CompanyService, podemos usar
      * Mockito para simular (mock) el comportamiento del ICompanyRepository.
      */
     @Mock
     private ICompanyRepository repositoryMock;
-    
+
     private CompanyService companyService;
 
     @BeforeEach
@@ -37,13 +39,11 @@ public class CompanyServiceTest {
     void testGetAllCompanies() {
         // Simulación de datos
         List<Company> companies = Arrays.asList(
-            new Company("123456", "Empresa A","3434343", "www.mipagina1.com", Sector.SERVICES, "gerente1@gmail.com", "123"),
-            new Company("123457", "Empresa B","3434344", "www.mipagina2.com", Sector.SERVICES, "gerente2@gmail.com", "123"),
-            new Company("123458", "Empresa C","3434345", "www.mipagina3.com", Sector.SERVICES, "gerente3@gmail.com", "123")
-
+                new Company("123456", "Empresa A", "3434343", "www.mipagina1.com", Sector.SERVICES, "gerente1@gmail.com", "123"),
+                new Company("123457", "Empresa B", "3434344", "www.mipagina2.com", Sector.SERVICES, "gerente2@gmail.com", "123"),
+                new Company("123458", "Empresa C", "3434345", "www.mipagina3.com", Sector.SERVICES, "gerente3@gmail.com", "123")
         );
 
-                
         when(repositoryMock.listAll()).thenReturn(companies);
 
         // Llamado al método
@@ -61,7 +61,7 @@ public class CompanyServiceTest {
 
     @Test
     void testSaveCompany_Success() {
-        Company newCompany = new Company("123459", "Empresa D","3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
+        Company newCompany = new Company("123459", "Empresa D", "3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
 
         when(repositoryMock.save(newCompany)).thenReturn(true); // Simula éxito
 
@@ -73,7 +73,7 @@ public class CompanyServiceTest {
 
     @Test
     void testSaveCompany_Failure() {
-        Company newCompany = new Company("123459", "Empresa D","3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
+        Company newCompany = new Company("123459", "Empresa D", "3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
 
         when(repositoryMock.save(newCompany)).thenReturn(false); // Simula fallo
 
