@@ -13,6 +13,7 @@ import java.util.List;
  * crear la tabla de empresas si no existe, insertar empresas, listar todas
  * las empresas y verificar la existencia de una empresa por su NIT.
  * 
+ * @author Libardo, Julio
  * @author Ana Sofia Arango Yanza
  * @author Juan Diego Gomez Garces
  */

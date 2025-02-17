@@ -9,6 +9,8 @@ import java.util.List;
  * Implementación del repositorio con Arreglos
  *
  * @author Libardo, Julio
+ * @author Ana Sofia Arango Yanza
+ * @author Juan Diego Gomez Garces
  */
 public class CompanyArraysRepository implements ICompanyRepository {
 
